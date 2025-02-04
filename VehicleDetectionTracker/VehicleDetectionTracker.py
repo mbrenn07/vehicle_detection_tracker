@@ -192,7 +192,7 @@ class VehicleDetectionTracker:
                     # Calculate time intervals (delta_t) and distances traveled between successive frames
                     for i in range(1, len(timestamps)):
                         t1, t2 = timestamps[i - 1], timestamps[i]
-                        delta_t = t2.timestamp() - t1.timestamp()
+                        delta_t = (t2 - t1).total_seconds()
                         if delta_t > 0:
                             x1, y1 = positions[i - 1]
                             x2, y2 = positions[i]
@@ -280,6 +280,12 @@ class VehicleDetectionTracker:
             video_path (str): Path to the video file.
             result_callback (function): A callback function to handle the processing results for each frame.
         """
+        # Create a named window
+        cv2.namedWindow("Video Detection Tracker - YOLOv8 + bytetrack", cv2.WINDOW_NORMAL)  # Allows resizing
+
+        # Resize the window to a specific width and height
+        cv2.resizeWindow("Video Detection Tracker - YOLOv8 + bytetrack", 800, 600)  # Set to 800x600
+
         # Process a video frame by frame, calling a callback with the results.
         cap = cv2.VideoCapture(video_path)
 
